@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 // 排除0
-export const isFalsy = (value) => (value === 0 ? false : !value);
-export const cleanObj = (Obj) => {
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
+export const cleanObj = (Obj: object) => {
   // 不要修改源对象
   const result = { ...Obj };
   Object.keys(result).forEach((key) => {
+    // @ts-ignore
     const value = result[key];
     // 当value是0时不删除属性
     if (isFalsy(value)) {
-      // 删除该属性及值
+      // 删除该属性及值 tsignore代表这里有报错但我现在先忽略
+      // @ts-ignore
       delete result[key];
     }
   });
@@ -17,14 +19,14 @@ export const cleanObj = (Obj) => {
 
 // 抽离出只在组件第一次加载执行副作用的逻辑
 // 注意自定义hook一定要用use开头
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []);
 };
 
 // 防抖
-export const useDebounce = (value, delay) => {
+export const useDebounce = <V>(value: V, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
