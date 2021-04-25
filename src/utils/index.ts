@@ -40,3 +40,26 @@ export const useDebounce = <V>(value: V, delay?: number) => {
 
   return debouncedValue;
 };
+
+export const useArray = <T>(person: T[]) => {
+  const [value, setValue] = useState(person);
+  const clear = () => {
+    setValue([]);
+  };
+  const removeIndex = (index: number) => {
+    // 不修改源对象
+    const newValue = [...value];
+    newValue.splice(index, 1);
+    setValue(newValue);
+  };
+  const add = (item: T) => {
+    const newValue = [...value, item];
+    setValue(newValue);
+  };
+  return {
+    value,
+    clear,
+    removeIndex,
+    add,
+  };
+};
