@@ -4,13 +4,20 @@ import "./index.css";
 import App from "./App";
 import { ProjectListSreen } from "./screens/project-list/index";
 import reportWebVitals from "./reportWebVitals";
-
-ReactDOM.render(
-  <React.StrictMode>
-    <ProjectListSreen />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+import { loadDevTools } from "jira-dev-tool";
+import { LoginScreen } from "./screens/login/index";
+import { AppProviders } from "context/index";
+loadDevTools(() => {
+  ReactDOM.render(
+    <React.StricMode>
+      {/* <AppProviders>
+        <LoginScreen />
+      </AppProviders> */}
+      123
+    </React.StricMode>,
+    document.getElementById("root")
+  );
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,8 +1,8 @@
 import React from "react";
 import { useAuth } from "context/auth-context";
 const apiUrl = process.env.REACT_APP_API_URL;
-export const LoginScreen = () => {
-  const { login, user } = useAuth();
+export const RegisterScreen = () => {
+  const { register, user } = useAuth();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // 如果不写as HTMLInputElement，默认是Element类型，Element类型上没有value
@@ -10,7 +10,7 @@ export const LoginScreen = () => {
       .value;
     const password = (event.currentTarget.elements[1] as HTMLInputElement)
       .value;
-    login({ username, password });
+    register({ username, password });
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -22,7 +22,7 @@ export const LoginScreen = () => {
         <label htmlFor="password">密码</label>
         <input type="password" id={"password"} />
       </div>
-      <button type="submit">登录</button>
+      <button type="submit">注册</button>
     </form>
   );
 };
