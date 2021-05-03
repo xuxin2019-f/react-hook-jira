@@ -52,6 +52,6 @@ export const useHttp = () => {
   const { user } = useAuth();
   // 由于这里的参数类型和http的完全相同，采用Parameters提取出来
   // 为了简便以后调用后不用写[]，用...将数组的数据解放出来
-  return (...[endPoint, config]: Parameters<typeof http>) =>
-    http(endPoint, { ...config, token: user.token });
+  return (...[endUrl, config]: Parameters<typeof http>) =>
+    http(endUrl, { ...config, token: user.token });
 };
