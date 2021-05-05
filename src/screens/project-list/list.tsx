@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { User } from "./search-panel";
+import { Table } from "antd";
+import dayjs from "dayjs";
 interface Project {
   id: string;
   name: string;
   personId: string;
   pin: boolean;
   organization: string;
+  created: number;
 }
 interface ListProps {
   users: User[];
@@ -13,25 +16,41 @@ interface ListProps {
 }
 export const List = ({ users, list }: ListProps) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>名称</th>
-          <th>负责人</th>
-        </tr>
-      </thead>
-      <tbody>
-        {list.map((project) => (
-          <tr key={project.id}>
-            <td>{project.name}</td>
-            {/* 为了避免undefined.name的报错，?.会在前面表达式为undefined时将整个表达式转化为undefined */}
-            <td>
-              {users.find((user) => user.id === project.personId)?.name ||
-                "未知"}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table
+      pagination={false}
+      dataSource={list}
+      columns={[
+        {
+          title: "名称",
+          // 表明从DataSource中找name属性
+          dataIndex: "name",
+          // localeCompare指的是中文排序
+          sorter: (a, b) => a.name.localeCompare(b.name),
+        },
+        {
+          title: "部门",
+          dataIndex: "organization",
+        },
+        {
+          title: "负责人",
+          render(value, project) {
+            return (
+              <span>
+                {users.find((user) => user.id === project.personId)?.name ||
+                  "未知"}
+              </span>
+            );
+          },
+          {
+            title: '创建时间',
+            render(value, project) {
+              return <span>
+                {project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'}
+              </span>
+            }
+          }
+        },
+      ]}
+    ></Table>
   );
 };

@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 // 排除0
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
-export const cleanObj = (Obj: object) => {
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
+
+// object可以是对象、函数、正则，太笼统，所以ts直接给了一个{}空对象，这会使下面取key值时报错
+export const cleanObj = (Obj: { [key: string]: unknown }) => {
   // 不要修改源对象
   const result = { ...Obj };
   Object.keys(result).forEach((key) => {
-    // @ts-ignore
     const value = result[key];
     // 当value是0时不删除属性
+    // 用isFalsy此时{checked: false}这样的属性也会被删掉，改用isVoid
     if (isFalsy(value)) {
-      // 删除该属性及值 tsignore代表这里有报错但我现在先忽略
-      // @ts-ignore
+      // 删除该属性及值 @ts-ignore代表这里有报错但我现在先忽略
+
       delete result[key];
     }
   });
@@ -22,6 +26,8 @@ export const cleanObj = (Obj: object) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // 依赖项里加callback会无限循环，这和useCallback以及useMemo有关
+    // eslint-disable-next-line (规则)react-hooks/exhaustive-deps
   }, []);
 };
 

@@ -24,6 +24,7 @@ export const ProjectListSreen = () => {
     client("projects", {
       data: cleanObj(debounceParam),
     }).then(setList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceParam]);
   // 请求user数据
   useMount(() => {

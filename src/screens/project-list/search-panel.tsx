@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Input, Select, Form } from "antd";
 export interface User {
   id: string;
   name: string;
@@ -17,24 +18,26 @@ interface SearchPanelProps {
 }
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
-    <form action="">
-      <input
-        type="text"
-        value={param.name}
-        // 相当于evt => setParam(Object.assign({},{name: evt.target.value}))
-        onChange={(evt) => setParam({ ...param, name: evt.target.value })}
-      />
-      <select
-        value={param.personId}
-        onChange={(evt) => setParam({ ...param, personId: evt.target.value })}
-      >
-        <option value="">负责人</option>
-        {users.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.name}
-          </option>
-        ))}
-      </select>
-    </form>
+    <Form style={{ marginTop: "2rem" }} layout={"inline"}>
+      <Form.Item>
+        <Input
+          type="text"
+          value={param.name}
+          // 相当于evt => setParam(Object.assign({},{name: evt.target.value}))
+          onChange={(value) => setParam({ ...param, name: value })}
+        />
+        <Select
+          value={param.personId}
+          onChange={(value) => setParam({ ...param, personId: value })}
+        >
+          <Select.Option value="">负责人</Select.Option>
+          {users.map((user) => (
+            <Select.Option key={user.id} value={user.id}>
+              {user.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
+    </Form>
   );
 };
