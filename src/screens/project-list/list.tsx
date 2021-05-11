@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
-interface Project {
+export interface Project {
   id: string;
   name: string;
   personId: string;
@@ -10,15 +10,16 @@ interface Project {
   organization: string;
   created: number;
 }
-interface ListProps {
+// 跳转到Table这个组件的定义：Table<RecordType extends object = any>(props: TableProps<RecordType>)
+// 为了解决无止境的向ListProps添加新属性，直接用TableProps这个包含Table所有props的属性代替
+interface ListProps extends TableProps<Project> {
   users: User[];
-  list: Project[];
+  // list: Project[]; 这时候就不用了，因为TableProps已经包含了dataSource属性
 }
-export const List = ({ users, list }: ListProps) => {
+export const List = ({ users, ...props }: ListProps) => { 
   return (
     <Table
       pagination={false}
-      dataSource={list}
       columns={[
         {
           title: "名称",
@@ -51,6 +52,8 @@ export const List = ({ users, list }: ListProps) => {
           }
         },
       ]}
+      // dataSource={list}
+      {...props}
     ></Table>
   );
 };

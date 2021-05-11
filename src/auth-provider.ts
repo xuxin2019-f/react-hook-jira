@@ -24,7 +24,7 @@ export const login = (data: { username: string; password: string }) => {
     } else {
       // 不加这句 login返回的是Promise<User|undefined>， 加上这句后返回的就是Promise<User></User>
       // 写这一句是为了防止在auth-context中调用时 如果请求失败会返回undefined类型，类型不是User了
-      return Promise.reject(data);
+      return Promise.reject(await response.json());
     }
   });
 };
@@ -41,7 +41,7 @@ export const register = (data: { username: string; password: string }) => {
       return handleUserResponse(await response.json());
     } else {
       // 不加这句 register返回的是Promise<User|undefined>， 加上这句后返回的就是Promise<User></User>
-      return Promise.reject(data);
+      return Promise.reject(await response.json());
     }
   });
 };

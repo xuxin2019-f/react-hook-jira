@@ -1,3 +1,5 @@
+import { FullPageLoading, FullPageError } from './../components/lib';
+import { useAsync } from 'utils/useAsync';
 import { http } from "./../utils/http";
 import { User } from "./../screens/project-list/search-panel";
 import * as Auth from "./../auth-provider";
@@ -38,10 +40,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     Auth.register(form).then((user) => setUser(user));
   const logout = () => Auth.logout(form).then(() => setUser(null));
 
+  const {data: user, error, isLoading, isIdle, isError, run setData} = useAsync()
   // 每次刷新都初始化user
   useEffect(() => {
-    bootStrapUser().then(setUser);
+    // bootStrapUser().then(setUser);
+    run(bootStrapUser)
   });
+
+  if(isIdle || isLoading) {
+    return <FullPageLoading />
+  }
+
+  if(isError) {
+    return <FullPageError error={error}/>
+  }
   return (
     <AuthContext.Provider
       children={children}

@@ -8,13 +8,21 @@ import left from "assets/left.svg";
 import right from "assets/right.svg";
 export const UnauthenticatedApp = () => {
   const [isRegister, setisRegister] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   return (
     <Container style={{ display: "flex", justifyContent: "center" }}>
       <Header />
       <Background />
       <ShadowCard>
         <Title />
-        {isRegister ? <RegisterScreen /> : <LoginScreen />}
+        {error ? (
+          <Typographt.Text type={"danger"}>{error.message}</Typographt.Text>
+        ) : null}
+        {isRegister ? (
+          <RegisterScreen onError={setError} />
+        ) : (
+          <LoginScreen onError={setError} />
+        )}
         <Divider />
         <a
           onClick={() => {
