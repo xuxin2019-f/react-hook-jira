@@ -7,6 +7,7 @@ import { useHttp } from "utils/http";
 import { Typography } from "antd";
 import { useAsync } from "utils/useAsync";
 import { Project } from "./list";
+import { useDocumentTitle } from "utils/index";
 export const ProjectListSreen = () => {
   // 第一行input框的姓名和筛选框的用户
   const [param, setParam] = useState({
@@ -16,6 +17,7 @@ export const ProjectListSreen = () => {
   const debounceParam = useDebounce(param, 2000);
   const { isLoading, error, data: list } = useProject(debounceParam);
   const { data: users } = useUsers();
+  useDocumentTitle("项目列表");
   return (
     <div>
       <h1>项目列表</h1>

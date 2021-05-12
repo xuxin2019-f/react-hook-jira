@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // 排除0
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) =>
@@ -68,4 +68,26 @@ export const useArray = <T>(person: T[]) => {
     removeIndex,
     add,
   };
+};
+
+// 改变title
+export const useDocumentTitle = (
+  title: string,
+  keepOnUnmount: boolean = true
+) => {
+  // 在整个生命周期保持值不变
+  const oldTitle = useRef(document.title).current;
+  // 页面加载时， oldTitle === 旧title
+  // 加载后，又一次执行了该hook， oldTitle===新taitle
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnmount) {
+        document.title = oldTitle;
+      }
+    };
+  }, [oldTitle, keepOnUnmount]);
 };
