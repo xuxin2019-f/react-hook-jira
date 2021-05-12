@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
+import {Link} from 'react-router-dom'
 export interface Project {
   id: string;
   name: string;
@@ -24,9 +25,13 @@ export const List = ({ users, ...props }: ListProps) => {
         {
           title: "名称",
           // 表明从DataSource中找name属性
-          dataIndex: "name",
+          // dataIndex: "name",
           // localeCompare指的是中文排序
           sorter: (a, b) => a.name.localeCompare(b.name),
+          render(value, project) {
+            // 因为这个Link是在项目详情页下的，所以会默认把Link跳转的路由作为该路由下的子路由
+            return <Link to={project.id.toString()}>{project.name}</Link>
+          }
         },
         {
           title: "部门",

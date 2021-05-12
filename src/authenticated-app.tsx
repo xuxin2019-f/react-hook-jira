@@ -1,42 +1,57 @@
 import React from "react";
 import { useAuth } from "context/auth-context";
-import { ProjectListSreen } from "screens/project-list/index";
+import { ProjectListScreen } from "screens/project-list/index";
+import { ProjectScreen } from "screens/project/index";
 import { Row } from "components/lib";
 import styled from "@emotion/styled";
 // 实现svg的展示
 import { ReactComponent as SoftwareLogo } from "assets/software-logo";
 import { Dropdown, Menu } from "antd";
+import { Navigate, Route, Routes } from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
 export const AuthenticatedApp = () => {
   const { logout, user } = useAutn();
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-          <SoftwareLogo
-            width={"18rem"}
-            color={"rgb(38, 132, 255)"}
-          ></SoftwareLogo>
-          <h2>项目</h2>
-          <h2>用户</h2>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key={logout}>
-                  <a onClick={logout}>登出</a>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <a onClick={(e) => e.preventDefault()}>Hi, {user?.name}</a>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
+      <PageHeader />
       <Main>
-        <ProjectListSreen />
+        <Router>
+          <Routes>
+            <Route path={"/projects"} element={ProjectListScreen} />
+            <Route path={"/projects/:projectId/*"} element={ProjectScreen} />
+          </Routes>
+        </Router>
       </Main>
     </Container>
+  );
+};
+
+const PageHeader = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Header between={true}>
+      <HeaderLeft gap={true}>
+        <SoftwareLogo
+          width={"18rem"}
+          color={"rgb(38, 132, 255)"}
+        ></SoftwareLogo>
+        <h2>项目</h2>
+        <h2>用户</h2>
+      </HeaderLeft>
+      <HeaderRight>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key={logout}>
+                <a onClick={logout}>登出</a>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a onClick={(e) => e.preventDefault()}>Hi, {user?.name}</a>
+        </Dropdown>
+      </HeaderRight>
+    </Header>
   );
 };
 

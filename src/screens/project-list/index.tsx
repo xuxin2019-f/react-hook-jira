@@ -8,7 +8,7 @@ import { Typography } from "antd";
 import { useAsync } from "utils/useAsync";
 import { Project } from "./list";
 import { useDocumentTitle } from "utils/index";
-export const ProjectListSreen = () => {
+export const ProjectListScreen = () => {
   // 第一行input框的姓名和筛选框的用户
   const [param, setParam] = useState({
     name: "",
